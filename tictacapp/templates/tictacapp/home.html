@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Tic Tac - Game{% endblock title %}
+
+{% block main %}
+<div class="container mt-5 pt-5">
+    <h3 class="text-center text-primary">PLAY TIC TAC</h3>
+    <div class="col-md-6 mx-auto mt-4">
+        <form method="post" id="tic-tac-form" class="p-4 bg-dark rounded animate__animated animate__fadeIn">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <label class="text-white">Choose Option</label>
+                    <select class="form-control bg-secondary text-white" name="option" id="option-select">
+                        <option value="">Choose</option>
+                        <option value="join">Join Room</option>
+                        <option value="create">Create Room</option>
+                    </select>
+                </div>
+                <div class="col-md-12 form-group" id="room-code-group" style="display: none;">
+                    <label class="text-white">Enter Room Code</label>
+                    <input type="text" name="room_code" class="form-control bg-secondary text-white" id="room-code-input">
+                </div>
+            </div>
+            <button type="button" class="btn btn-success mt-3 animate__animated animate__bounce" id="join-room-btn" style="display: none;">Join Room</button>
+            <button type="button" class="btn btn-info mt-3 animate__animated animate__bounce" id="create-room-btn" style="display: none;">Create Room</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.getElementById('option-select').addEventListener('change', function() {
+        var option = this.value;
+        var roomCodeGroup = document.getElementById('room-code-group');
+        var joinRoomBtn = document.getElementById('join-room-btn');
+        var createRoomBtn = document.getElementById('create-room-btn');
+
+        if (option === 'join') {
+            roomCodeGroup.style.display = 'block';
+            joinRoomBtn.style.display = 'block';
+            createRoomBtn.style.display = 'none';
+        } else if (option === 'create') {
+            roomCodeGroup.style.display = 'none';
+            joinRoomBtn.style.display = 'none';
+            createRoomBtn.style.display = 'block';
+        } else {
+            roomCodeGroup.style.display = 'none';
+            joinRoomBtn.style.display = 'none';
+            createRoomBtn.style.display = 'none';
+        }
+    });
+
+    document.getElementById('create-room-btn').addEventListener('click', function() {
+        // Generate room code and submit form
+        var roomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+        document.getElementById('room-code-input').value = roomCode;
+        document.getElementById('tic-tac-form').submit();
+    });
+
+    document.getElementById('join-room-btn').addEventListener('click', function() {
+        document.getElementById('tic-tac-form').submit();
+    });
+</script>
+{% endblock main %}
+
