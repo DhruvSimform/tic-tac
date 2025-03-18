@@ -19,5 +19,7 @@ from django.urls import path ,include
 from . import views
 urlpatterns = [
     path('',views.home , name='home'),
-    # path('room/',views.create_room ,name='create-room')
+    path('play/<uuid:room_code>',views.play ,name='play'),
+    path('lobby/<uuid:room_code>/', views.lobby, name='lobby'),
+
 ]
